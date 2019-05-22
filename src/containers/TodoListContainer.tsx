@@ -2,7 +2,8 @@ import React from 'react';
 import TodoList from '../components/todoList';
 import { connect } from 'react-redux';
 import { StoreState } from '../store/modules';
-import { TodoItemDataParams, actionCreators as todosActions } from '../store/modules/todos';
+import { actionCreators as todosActions } from '../store/modules/todos';
+import { TodoItemDataParams } from '../store/modules/todos';
 import {bindActionCreators} from 'redux';
 
 interface Props {

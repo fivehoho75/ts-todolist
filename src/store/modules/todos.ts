@@ -1,19 +1,59 @@
+import { createAction, handleActions } from 'redux-actions';
+
 export interface TodoItemDataParams {
     id: number;
     text: string;
     done: boolean;
-}
+};
 
 export interface TodoState {
     todoItems: TodoItemDataParams[];
     input: string;
-}
+};
+
+const initialState: TodoState = {
+    todoItems: [],
+    input: '',
+};
 
 export const CREATE = "todo/CREATE";
 export const REMOVE = "todo/REMOVE";
 export const TOGGLE = "todo/TOGGLE";
 export const CHANGE_INPUT = "todo/CHANGE_INPUT";
 
+export const actionCreators = {
+    create: createAction( CREATE ),
+    remove: createAction( REMOVE ),
+    toggle: createAction( TOGGLE ),
+    changeInput: createAction( CHANGE_INPUT ),
+};
+
+export const TodoReducer = handleActions<TodoState>({
+    [CREATE]: (state: TodoState, action: any) => ({
+        input: '',
+        todoItems: state.todoItems.concat({
+            id: state.todoItems.length,
+            text: action.payload,
+            done: false,
+          }),
+    }),
+    [REMOVE]: (state: TodoState, action: any) => ({
+        ...state,
+        todoItems: state.todoItems.filter(item => item.id !== action.payload), 
+    }),
+    [TOGGLE]: (state: TodoState, action: any) => ({
+        ...state,
+        todoItems: state.todoItems.map(
+            item => item.id === action.payload ? { ...item, done: !item.done} : item
+        ),    
+    }),
+    [CHANGE_INPUT]: (state: TodoState, action: any) => ({
+        ...state,
+        input: action.payload,
+    }),
+}, initialState);
+
+/*
 interface CreateAction {
     type: typeof CREATE;
     payload: TodoItemDataParams;
@@ -131,4 +171,4 @@ export function todoReducer(
         default:
             return state;
     }
-}
+}*/
